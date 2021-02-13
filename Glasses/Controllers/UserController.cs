@@ -16,9 +16,11 @@ namespace Glasses.Controllers
     {
 
         private readonly IUserRepositry genericRepository;
-        public UserController(IUserRepositry _genericRepository)
+        private readonly IGenericRepositry<Roles> _RolesRepo;
+        public UserController(IUserRepositry _genericRepository, IGenericRepositry<Roles> RolesRepo)
         {
             genericRepository = _genericRepository;
+            _RolesRepo = RolesRepo;
         }
         [HttpGet("GetAll")]
         public ActionResult<IEnumerable<User>> GetAll()
@@ -82,6 +84,13 @@ namespace Glasses.Controllers
                     return Ok(null);
             }
             return Ok(null);
+        }
+        [HttpGet]
+        [Route("GetRoles")]
+        public IActionResult GetRoles()
+        {
+            var roles = _RolesRepo.GetAll();
+            return Ok(roles);
         }
     }
 }
