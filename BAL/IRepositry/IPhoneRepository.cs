@@ -8,6 +8,6 @@ namespace BAL.IRepositry
 	public interface IPhoneRepository : IGenericRepositry<Phones>
 	{
 		IEnumerable<Phones> GetUserByObjectId(string ObjectName, int ObjectId);
-		void DeleteRange(List<Phones> phones)
+		void DeleteRange(List<Phones> phones);
 	}
 }

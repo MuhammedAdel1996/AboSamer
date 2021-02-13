@@ -83,8 +83,8 @@ namespace Technical
             app.UseStaticFiles();
             app.UseStaticFiles(new StaticFileOptions()
             {
-                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot/Resources")),
-                RequestPath = new PathString("/wwwroot/Resources")
+                //FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot/Resources")),
+                //RequestPath = new PathString("/wwwroot/Resources")
             });
             app.UseHttpsRedirection();
             app.UseMvc();

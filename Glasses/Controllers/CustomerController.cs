@@ -99,8 +99,16 @@ namespace Technical.Controllers
         [HttpGet("GetById/{id}")]
         public ActionResult GetById(int id)
         {
+            CustomerDTO Dto = new CustomerDTO();
             var model = _CustomerRepo.GetById(id);
-            return Ok(model);
+            Dto.name = model.name;
+            Dto.address = model.address;
+            Dto.field = model.field;
+            Dto.sectorid = model.sectorid;
+            Dto.ownerid = model.ownerid;
+            Dto.id = model.id;
+            Dto.Phones =  _PhonesRepo.GetUserByObjectId("Customer", Dto.id).ToList();
+            return Ok(Dto);
         }
     }
 }

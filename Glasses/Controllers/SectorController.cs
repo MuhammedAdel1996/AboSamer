@@ -36,13 +36,7 @@ namespace Technical.Controllers
             sector.Name = SectorModel.Name;
             _SectorRepo.Insert(sector);
             _SectorRepo.Save();
-            foreach (var element in SectorModel.Phones)
-            {
-                element.objectid = sector.id;
-                element.objectname = "Sector";
-                _PhonesRepo.Insert(element);
-                _PhonesRepo.Save();
-            }
+
             return Ok(true);
         }
         [HttpPut]
@@ -57,15 +51,7 @@ namespace Technical.Controllers
 
             _SectorRepo.Update(sector);
             _SectorRepo.Save();
-            var phones = _PhonesRepo.GetUserByObjectId("Sector", SectorModel.id).ToList();
-            _PhonesRepo.DeleteRange(phones);
-            foreach (var element in SectorModel.Phones)
-            {
-                element.objectid = sector.id;
-                element.objectname = "Sector";
-                _PhonesRepo.Insert(element);
-                _PhonesRepo.Save();
-            }
+           
             return Ok(true);
         }
         [HttpDelete]
@@ -79,8 +65,6 @@ namespace Technical.Controllers
             {
                 _SectorRepo.Delete(id);
                 _SectorRepo.Save();
-                var phones = _PhonesRepo.GetUserByObjectId("Sector", id).ToList();
-                _PhonesRepo.DeleteRange(phones);
                 return Ok(true);
             }
             catch
