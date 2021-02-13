@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30002.166
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Technical", "Glasses\Technical.csproj", "{4297F1EA-9A84-4E13-AB00-00C4E29CBAB2}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAccessLayer", "DataAccessLayer\DataAccessLayer.csproj", "{2778837D-A85F-416D-ACDF-D0342B16C28E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BAL", "BAL\BAL.csproj", "{19237BB7-FF66-4D21-895F-955525765FE2}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4297F1EA-9A84-4E13-AB00-00C4E29CBAB2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4297F1EA-9A84-4E13-AB00-00C4E29CBAB2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4297F1EA-9A84-4E13-AB00-00C4E29CBAB2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4297F1EA-9A84-4E13-AB00-00C4E29CBAB2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2778837D-A85F-416D-ACDF-D0342B16C28E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2778837D-A85F-416D-ACDF-D0342B16C28E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2778837D-A85F-416D-ACDF-D0342B16C28E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2778837D-A85F-416D-ACDF-D0342B16C28E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{19237BB7-FF66-4D21-895F-955525765FE2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{19237BB7-FF66-4D21-895F-955525765FE2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{19237BB7-FF66-4D21-895F-955525765FE2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{19237BB7-FF66-4D21-895F-955525765FE2}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {09F3E9DC-2A41-4DAF-9307-D30C32E32982}
+	EndGlobalSection
+EndGlobal
