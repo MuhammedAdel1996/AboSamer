@@ -20,7 +20,7 @@ namespace BAL.Repositry
 
         public User FindUser(User model)
         {
-            var user = taskContext.Users.FirstOrDefault(x => x.Password == model.Password && x.UserName == model.UserName);
+            var user = taskContext.Users.FirstOrDefault(x => x.Password == model.Password && x.UserName == model.UserName&&x.active==true);
 
             return user;
         }
