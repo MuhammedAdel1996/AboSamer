@@ -43,9 +43,7 @@ namespace Technical.Controllers
             _CustomerRepo.Save();
             foreach (var element in CustomerDTO.Phones)
             {
-                element.objectid = Customer.id;
-                element.objectname = "Customer";
-                _PhonesRepo.Insert(element);
+                _PhonesRepo.Insert(new Phones() {objectid= Customer.id,objectname= "Customer",phone=element });
                 _PhonesRepo.Save();
             }
             return Ok(true);
@@ -69,9 +67,7 @@ namespace Technical.Controllers
             _PhonesRepo.DeleteRange(phones);
             foreach (var element in CustomerDTO.Phones)
             {
-                element.objectid = Customer.id;
-                element.objectname = "Customer";
-                _PhonesRepo.Insert(element);
+                _PhonesRepo.Insert(new Phones() { objectid = Customer.id, objectname = "Customer", phone = element });
                 _PhonesRepo.Save();
             }
             return Ok(true);
@@ -107,7 +103,7 @@ namespace Technical.Controllers
             Dto.sectorid = model.sectorid;
             Dto.ownerid = model.ownerid;
             Dto.id = model.id;
-            Dto.Phones =  _PhonesRepo.GetUserByObjectId("Customer", Dto.id).ToList();
+            Dto.Phones =  _PhonesRepo.GetUserByObjectId("Customer", Dto.id).Select(s => s.phone).ToList();
             return Ok(Dto);
         }
     }
