@@ -39,6 +39,7 @@ namespace Technical
             services.AddScoped(typeof(IGenericRepositry<>), typeof(GenerateRepositry<>));
             services.AddScoped(typeof(IPhoneRepository), typeof(PhoneRepository));
             services.AddScoped(typeof(IUserRepositry), typeof(UserRepositry));
+            services.AddScoped(typeof(ICustomerRepository), typeof(CustomerRepository));
             services.AddScoped(typeof(IAuthService), typeof(AuthRepositry));
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);

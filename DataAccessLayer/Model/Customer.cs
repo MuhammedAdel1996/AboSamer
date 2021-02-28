@@ -25,6 +25,7 @@ namespace DataAccessLayer.Model
 		public virtual User User { set; get; }
 		public int count { set; get; }
 		public long? hours { set; get; }
+		public DateTime created { set; get; }
 		public virtual ICollection<Employee> Employees { set; get; }
 		public virtual ICollection<FollowUp> FollowUps { set; get; }
 		public virtual ICollection<Order> Orders { set; get; } 
