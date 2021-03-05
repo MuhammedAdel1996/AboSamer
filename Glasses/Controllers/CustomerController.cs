@@ -46,7 +46,7 @@ namespace Technical.Controllers
                 _PhonesRepo.Insert(new Phones() {objectid= Customer.id,objectname= "Customer",phone=element });
                 _PhonesRepo.Save();
             }
-            return Ok(true);
+            return Ok(Customer.id);
         }
         [HttpPut]
         [Route("Edit")]

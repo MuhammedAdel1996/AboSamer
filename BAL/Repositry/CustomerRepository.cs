@@ -1,6 +1,7 @@
 ﻿using BAL.IRepositry;
 using DataAccessLayer;
 using DataAccessLayer.Model;
+using DataAccessLayer.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,6 +35,15 @@ namespace BAL.Repositry
 		public IEnumerable<FollowUp> GetFollowUp(int id)
 		{
 			var result = taskContext.FollowUp.Where(s => s.customerid == id);
+			return result;
+		}
+		public CustomerFollowUP GetUserInfo(int id)
+		{
+			var result = (from e in taskContext.Customer join s in taskContext.Sector
+						 on e.sectorid equals s.id join u in taskContext.Users
+						 on e.ownerid equals u.UserId where e.id==id select (new CustomerFollowUP() {sectorid=s.id,
+						 sectorname=s.Name,address=e.address,created=e.created,field=e.field,
+						 id=e.id,name=e.name,ownerid=u.UserId,username=u.UserName})).FirstOrDefault();
 			return result;
 		}
 	}

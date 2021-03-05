@@ -16,7 +16,9 @@ namespace DataAccessLayer.ViewModels
 		public string address { set; get; }
 		public string field { set; get; }
 		public int sectorid { set; get; }
+		public string sectorname { set; get; }
 		public int ownerid { set; get; }
+		public string username { set; get; }
 		public DateTime created { set; get; }
 		public List<FollowUp> followUps { set; get; }
 	}

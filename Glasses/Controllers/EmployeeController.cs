@@ -22,10 +22,10 @@ namespace Technical.Controllers
             _PhonesRepo = PhonesRepo;
         }
         [HttpGet]
-        [Route("GetAll")]
-        public IActionResult GetAll()
+        [Route("GetAll/{CustomerId}")]
+        public IActionResult GetAll(int CustomerId)
         {
-            var result = _EmpRepo.GetAll().ToList();
+            var result = _EmpRepo.GetAll().Where(s=>s.customerid==CustomerId).ToList();
             return Ok(result);
         }
         [HttpPost]

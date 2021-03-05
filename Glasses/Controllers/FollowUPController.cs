@@ -54,19 +54,13 @@ namespace Technical.Controllers
         [Route("GetCustomerInfo/{id}")]
         public IActionResult GetCustomerInfo(int id)
         {
-            CustomerFollowUP customerFollowUP = new CustomerFollowUP();
-            var customerinfo = _CustomerRepo.GetById(id);
-            if(customerinfo!=null)
+            var customerFollowUP = _CustomerRepo.GetUserInfo(id);
+            if(customerFollowUP!=null)
             {
-                customerFollowUP.address = customerinfo.address;
-                customerFollowUP.id = customerinfo.id;
-                customerFollowUP.name = customerinfo.name;
-                customerFollowUP.ownerid = customerinfo.ownerid;
-                customerFollowUP.field = customerinfo.field;
-                customerFollowUP.sectorid = customerinfo.sectorid;
-                customerFollowUP.created = customerinfo.created;
+                customerFollowUP.followUps = _CustomerRepo.GetFollowUp(id).ToList();
+
             }
-            customerFollowUP.followUps = _CustomerRepo.GetFollowUp(id).ToList();
+
             return Ok(customerFollowUP);
         }
         [HttpPost]
