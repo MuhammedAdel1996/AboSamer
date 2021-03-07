@@ -15,10 +15,12 @@ namespace Technical.Controllers
     public class FollowUPController : ControllerBase
     {
         private readonly ICustomerRepository _CustomerRepo;
+        private readonly IPhoneRepository _PhonesRepo;
         private readonly Dictionary<int, int> Time;
-        public FollowUPController(ICustomerRepository CustomerRepo)
+        public FollowUPController(ICustomerRepository CustomerRepo, IPhoneRepository PhonesRepo)
         {
             _CustomerRepo = CustomerRepo;
+            _PhonesRepo = PhonesRepo;
             Time = new Dictionary<int, int>()
         {
             { 1, 3},
@@ -58,6 +60,7 @@ namespace Technical.Controllers
             if(customerFollowUP!=null)
             {
                 customerFollowUP.followUps = _CustomerRepo.GetFollowUp(id).ToList();
+                customerFollowUP.Phones = _PhonesRepo.GetUserByObjectId("Customer", id).Select(s => s.phone).ToList();
 
             }
 

@@ -10,6 +10,7 @@ namespace DataAccessLayer.ViewModels
 		public CustomerFollowUP()
 		{
 			followUps = new List<FollowUp>();
+			Phones = new List<string>();
 		}
 		public int id { set; get; }
 		public string name { set; get; }
@@ -21,5 +22,7 @@ namespace DataAccessLayer.ViewModels
 		public string username { set; get; }
 		public DateTime created { set; get; }
 		public List<FollowUp> followUps { set; get; }
+		public List<string> Phones { set; get; }
+
 	}
 }
