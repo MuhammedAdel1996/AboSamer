@@ -17,10 +17,12 @@ namespace Technical.Controllers
         private readonly ICustomerRepository _CustomerRepo;
         private readonly IPhoneRepository _PhonesRepo;
         private readonly Dictionary<int, int> Time;
-        public FollowUPController(ICustomerRepository CustomerRepo, IPhoneRepository PhonesRepo)
+        private readonly IGenericRepositry<FollowUp> _genericRepositry;
+        public FollowUPController(ICustomerRepository CustomerRepo, IPhoneRepository PhonesRepo, IGenericRepositry<FollowUp> genericRepositry)
         {
             _CustomerRepo = CustomerRepo;
             _PhonesRepo = PhonesRepo;
+            _genericRepositry = genericRepositry;
             Time = new Dictionary<int, int>()
         {
             { 1, 3},
@@ -95,10 +97,12 @@ namespace Technical.Controllers
                     followUp.ownerid = followUpDTO.ownerid;
                     if (customer != null)
                     {
-
+                        //al wad mathew
                         customer.count = Time[customer.count];
                         _CustomerRepo.Update(customer);
                         _CustomerRepo.Save();
+                        _genericRepositry.Insert(followUp);
+                        _genericRepositry.Save();
                     }
                 }
                 return Ok(true);

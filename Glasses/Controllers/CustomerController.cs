@@ -39,6 +39,7 @@ namespace Technical.Controllers
             Customer.sectorid = CustomerDTO.sectorid;
             Customer.ownerid = CustomerDTO.ownerid;
             Customer.count = 3;
+            Customer.created = DateTime.Now;
             _CustomerRepo.Insert(Customer);
             _CustomerRepo.Save();
             foreach (var element in CustomerDTO.Phones)
