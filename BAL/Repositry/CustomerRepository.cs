@@ -19,17 +19,17 @@ namespace BAL.Repositry
 		}
 		public IEnumerable<int> GetCurrent()
 		{
-			var result = taskContext.Customer.Where(s =>s.created.AddDays(s.count).Date==DateTime.Now.Date).Select(s=>s.id);
+			var result = taskContext.Customer.Where(s =>s.created.AddDays(s.count).Date==DateTime.Now.Date && s.hours==null).Select(s=>s.id);
 			return result;
 		}
 		public IEnumerable<int> GetLate()
 		{
-			var result = taskContext.Customer.Where(s => s.created.AddDays(s.count).Date < DateTime.Now.Date).Select(s => s.id);
+			var result = taskContext.Customer.Where(s => s.created.AddDays(s.count).Date < DateTime.Now.Date && s.hours==null).Select(s => s.id);
 			return result;
 		}
 		public IEnumerable<int> GetDelay()
 		{
-			var result = taskContext.Customer.Where(s => s.created.AddHours((int)s.hours) ==DateTime.Now).Select(s => s.id);
+			var result = taskContext.Customer.Where(s => s.created.AddDays(s.count).Date ==DateTime.Now.Date && s.created.AddDays(s.count).AddHours((int)s.hours).Hour<=DateTime.Now.Hour&&s.hours!=null).Select(s => s.id);
 			return result;
 		}
 		public IEnumerable<FollowUp> GetFollowUp(int id)

@@ -97,7 +97,7 @@ namespace Technical.Controllers
                     followUp.ownerid = followUpDTO.ownerid;
                     if (customer != null)
                     {
-                        //al wad mathew
+                        customer.hours = null;
                         customer.count = Time[customer.count];
                         _CustomerRepo.Update(customer);
                         _CustomerRepo.Save();
