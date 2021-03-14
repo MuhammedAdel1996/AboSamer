@@ -24,7 +24,7 @@ namespace BAL.Repositry
 		}
 		public IEnumerable<int> GetLate()
 		{
-			var result = taskContext.Customer.Where(s => s.created.AddDays(s.count).Date < DateTime.Now.Date && s.hours==null).Select(s => s.id);
+			var result = taskContext.Customer.Where(s => s.created.AddDays(s.count).Date < DateTime.Now.Date).Select(s => s.id);
 			return result;
 		}
 		public IEnumerable<int> GetDelay()
