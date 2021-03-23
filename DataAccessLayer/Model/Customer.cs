@@ -19,6 +19,8 @@ namespace DataAccessLayer.Model
 		public string field { set; get; }
 		[ForeignKey("Sector")]
 		public int sectorid { set;get; }
+		public string vacancy { set; get; }
+		public string email { set; get; }
 		public virtual Sector Sector { set; get; }
 		[ForeignKey("User")]
 		public int ownerid { set; get; }

@@ -55,7 +55,7 @@ namespace Glasses.Controllers
                 return Ok(false);
             else
             {
-                result.active = false;
+                result.active = !result.active;
                 genericRepository.Update(result);
                 genericRepository.Save();
                 return Ok(true);

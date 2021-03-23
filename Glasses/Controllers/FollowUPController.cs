@@ -77,7 +77,8 @@ namespace Technical.Controllers
                 var customer = _CustomerRepo.GetById(followUpDTO.customerid);
                 if (followUpDTO.delay.HasValue)
                 {
-
+                    if (followUpDTO.delay.Value < DateTime.Now || followUpDTO.delay.Value.Hour < 9 || followUpDTO.delay.Value.Hour > 17)
+                        return Ok("Invalid Date");
                     if (customer != null)
                     {
                         var difference = (long)(followUpDTO.create - customer.created.AddDays(customer.count)).TotalHours;
@@ -105,11 +106,11 @@ namespace Technical.Controllers
                         _genericRepositry.Save();
                     }
                 }
-                return Ok(true);
+                return Ok("Added Done");
             }
             catch
             {
-                return Ok(false);
+                return Ok("Error in Add");
             }
 
         }

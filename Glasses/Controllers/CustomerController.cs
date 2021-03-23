@@ -39,6 +39,8 @@ namespace Technical.Controllers
             Customer.sectorid = CustomerDTO.sectorid;
             Customer.ownerid = CustomerDTO.ownerid;
             Customer.count = 3;
+            Customer.vacancy = CustomerDTO.vacancy;
+            Customer.email = CustomerDTO.email;
             Customer.created = DateTime.Now;
             _CustomerRepo.Insert(Customer);
             _CustomerRepo.Save();
@@ -62,6 +64,8 @@ namespace Technical.Controllers
             Customer.field = CustomerDTO.field;
             Customer.sectorid = CustomerDTO.sectorid;
             Customer.ownerid = CustomerDTO.ownerid;
+            Customer.vacancy = CustomerDTO.vacancy;
+            Customer.email = CustomerDTO.email;
             _CustomerRepo.Update(Customer);
             _CustomerRepo.Save();
             var phones = _PhonesRepo.GetUserByObjectId("Customer", CustomerDTO.id).ToList();

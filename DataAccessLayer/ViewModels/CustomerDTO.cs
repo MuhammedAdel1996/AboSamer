@@ -18,6 +18,8 @@ namespace DataAccessLayer.ViewModels
 		public int sectorid { set; get; }
 		public int ownerid { set; get; }
 		public int count { set; get; }
+		public string vacancy { set; get; }
+		public string email { set; get; }
 		public long? hours { set; get; }
 		public List<string> Phones { set; get; }
 	}

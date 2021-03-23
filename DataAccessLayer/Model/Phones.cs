@@ -10,5 +10,6 @@ namespace DataAccessLayer.Model
 		public string phone { set; get; }
 		public int objectid { set; get; }
 		public string objectname { set; get; }
+		public bool whatsapp { set; get; }
 	}
 }
