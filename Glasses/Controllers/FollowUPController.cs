@@ -81,7 +81,7 @@ namespace Technical.Controllers
         }
         [HttpPost]
         [Route("AddFollowUp")]
-        public IActionResult AddFollowUp([FromBody] FollowUpDTO followUpDTO)
+        public string AddFollowUp([FromBody] FollowUpDTO followUpDTO)
         {
             try
             {
@@ -89,7 +89,7 @@ namespace Technical.Controllers
                 if (followUpDTO.delay.HasValue)
                 {
                     if (followUpDTO.delay.Value < DateTime.Now || followUpDTO.delay.Value.Hour < 9 || followUpDTO.delay.Value.Hour > 17)
-                        return Ok("Invalid Date");
+                        return "Invalid Date";
                     if (customer != null)
                     {
                         var difference = (long)(followUpDTO.create - customer.created.AddDays(customer.count)).TotalHours;
@@ -117,11 +117,11 @@ namespace Technical.Controllers
                         _genericRepositry.Save();
                     }
                 }
-                return Ok("Added Done");
+                return "Added Done";
             }
             catch
             {
-                return Ok("Error in Add");
+                return "Error in Add";
             }
 
         }
