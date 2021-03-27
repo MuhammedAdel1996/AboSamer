@@ -24,17 +24,25 @@ namespace BAL.Repositry
 		}
 		public IEnumerable<int> GetLate()
 		{
-			var result = taskContext.Customer.Where(s => s.created.AddDays(s.count).Date < DateTime.Now.Date).Select(s => s.id);
+			var result = taskContext.Customer.Where(s => s.created.AddDays(s.count).AddHours((int)s.hours).Date < DateTime.Now.Date).Select(s => s.id);
 			return result;
 		}
 		public IEnumerable<int> GetDelay()
 		{
-			var result = taskContext.Customer.Where(s => s.created.AddDays(s.count).Date ==DateTime.Now.Date && s.created.AddDays(s.count).AddHours((int)s.hours).Hour<=DateTime.Now.Hour&&s.hours!=null).Select(s => s.id);
+			var result = taskContext.Customer.Where(s => s.created.AddDays(s.count).AddHours((int)s.hours).Date ==DateTime.Now.Date && s.created.AddDays(s.count).AddHours((int)s.hours).Hour<=DateTime.Now.Hour&&s.hours!=null).Select(s => s.id);
 			return result;
 		}
-		public IEnumerable<FollowUp> GetFollowUp(int id)
+		public IEnumerable<FollowUpDTO> GetFollowUp(int id)
 		{
-			var result = taskContext.FollowUp.Where(s => s.customerid == id);
+			var result = (from  e in taskContext.FollowUp join u in taskContext.Users on 
+						 e.ownerid equals u.UserId where e.customerid==id
+						 select new FollowUpDTO {user=u.UserName,create=e.create,customerid=e.customerid,discribtion=e.discribtion
+						 ,followup=e.followup,id=e.id,order=e.order,ownerid=e.ownerid}).ToList();
+			return result;
+		}
+		public List<int> GetNewCustomers()
+		{
+			var result = taskContext.Customer.Where(s => s.count < 30).Select(s => s.id).ToList();
 			return result;
 		}
 		public CustomerFollowUP GetUserInfo(int id)
@@ -44,6 +52,20 @@ namespace BAL.Repositry
 						 on e.ownerid equals u.UserId where e.id==id select (new CustomerFollowUP() {sectorid=s.id,
 						 sectorname=s.Name,address=e.address,created=e.created,field=e.field,
 						 id=e.id,name=e.name,ownerid=u.UserId,username=u.UserName})).FirstOrDefault();
+			return result;
+		}
+		public List<EmployeeDTO> GetEmployees(int id)
+		{
+			var result = taskContext.Employee.Where(s => s.customerid == id).Select(
+				s => new EmployeeDTO
+				{
+					customerid = s.customerid,
+					email = s.email,
+					id = s.id,
+					jobtitle = s.jobtitle
+				,
+					name = s.name
+				}).ToList();
 			return result;
 		}
 	}

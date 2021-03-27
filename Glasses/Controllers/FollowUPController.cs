@@ -55,6 +55,13 @@ namespace Technical.Controllers
             return Ok(result);
         }
         [HttpGet]
+        [Route("NewCustomters")]
+        public IActionResult NewCustomters()
+        {
+            var result = _CustomerRepo.GetNewCustomers();
+            return Ok(result);
+        }
+        [HttpGet]
         [Route("GetCustomerInfo/{id}")]
         public IActionResult GetCustomerInfo(int id)
         {
@@ -62,8 +69,12 @@ namespace Technical.Controllers
             if(customerFollowUP!=null)
             {
                 customerFollowUP.followUps = _CustomerRepo.GetFollowUp(id).ToList();
-                customerFollowUP.Phones = _PhonesRepo.GetUserByObjectId("Customer", id).Select(s => s.phone).ToList();
-
+                customerFollowUP.Phones = _PhonesRepo.GetUserByObjectId("Customer", id).Select(s => new PhoneDTO {phone=s.phone,whatsapp=s.whatsapp } ).ToList();
+                customerFollowUP.employees = _CustomerRepo.GetEmployees(id);
+                foreach(var employee in customerFollowUP.employees)
+                {
+                    _PhonesRepo.GetUserByObjectId("Employee", employee.id).Select(s => new PhoneDTO { phone = s.phone, whatsapp = s.whatsapp }).ToList();
+                }
             }
 
             return Ok(customerFollowUP);

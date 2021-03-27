@@ -11,7 +11,9 @@ namespace BAL.IRepositry
 		 IEnumerable<int> GetCurrent();
 		IEnumerable<int> GetLate();
 		IEnumerable<int> GetDelay();
-		IEnumerable<FollowUp> GetFollowUp(int id);
+		IEnumerable<FollowUpDTO> GetFollowUp(int id);
 		CustomerFollowUP GetUserInfo(int id);
+		 List<EmployeeDTO> GetEmployees(int id);
+		List<int> GetNewCustomers();
 	}
 }

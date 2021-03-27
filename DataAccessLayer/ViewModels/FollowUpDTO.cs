@@ -14,6 +14,7 @@ namespace DataAccessLayer.ViewModels
 		public DateTime create { set; get; }
 		public string discribtion { set; get; }
 		public DateTime? delay { set; get; }
+		public string user { set; get; }
 		
 	}
 }

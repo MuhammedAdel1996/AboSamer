@@ -9,13 +9,13 @@ namespace DataAccessLayer.ViewModels
 	{
 		public EmployeeDTO()
 		{
-			Phones = new List<string>();
+			Phones = new List<PhoneDTO>();
 		}
 		public int id { set; get; }
 		public string name { set; get; }
 		public string jobtitle { set; get; }
 		public string email { set; get; }
 		public int customerid { set; get; }
-		public List<string> Phones { set; get; }
+		public List<PhoneDTO> Phones { set; get; }
 	}
 }

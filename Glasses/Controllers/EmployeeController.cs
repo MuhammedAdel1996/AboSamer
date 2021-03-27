@@ -41,7 +41,7 @@ namespace Technical.Controllers
             _EmpRepo.Save();
             foreach(var element in employeeDTO.Phones)
             {
-                _PhonesRepo.Insert(new Phones() { objectid = employee.id, objectname = "Employee", phone = element });
+                _PhonesRepo.Insert(new Phones() { objectid = employee.id, objectname = "Employee", phone = element.phone,whatsapp=element.whatsapp });
 
                 _PhonesRepo.Save();
             }
@@ -65,7 +65,7 @@ namespace Technical.Controllers
             _PhonesRepo.DeleteRange(phones);
             foreach (var element in employeeDTO.Phones)
             {
-                _PhonesRepo.Insert(new Phones() { objectid = employee.id, objectname = "Employee", phone = element });
+                _PhonesRepo.Insert(new Phones() { objectid = employee.id, objectname = "Employee", phone = element.phone,whatsapp=element.whatsapp });
                 _PhonesRepo.Save();
             }
             return Ok(true);
@@ -100,7 +100,7 @@ namespace Technical.Controllers
             dto.name = model.name;
             dto.jobtitle = model.jobtitle;
             dto.id = model.id;
-            dto.Phones= _PhonesRepo.GetUserByObjectId("Employee", id).Select(s=>s.phone).ToList();
+            dto.Phones= _PhonesRepo.GetUserByObjectId("Employee", id).Select(s=> new PhoneDTO {phone= s.phone,whatsapp=s.whatsapp }).ToList();
             return Ok(dto);
         }
     }

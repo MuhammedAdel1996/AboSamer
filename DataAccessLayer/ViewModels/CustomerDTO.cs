@@ -9,7 +9,7 @@ namespace DataAccessLayer.ViewModels
 	{
 		public CustomerDTO()
 		{
-			Phones = new List<string>();
+			Phones = new List<PhoneDTO>();
 		}
 		public int id { set; get; }
 		public string name { set; get; }
@@ -21,6 +21,6 @@ namespace DataAccessLayer.ViewModels
 		public string vacancy { set; get; }
 		public string email { set; get; }
 		public long? hours { set; get; }
-		public List<string> Phones { set; get; }
+		public List<PhoneDTO> Phones { set; get; }
 	}
 }
