@@ -92,7 +92,7 @@ namespace Technical.Controllers
                         return "Invalid Date";
                     if (customer != null)
                     {
-                        var difference = (long)(followUpDTO.create - customer.created.AddDays(customer.count)).TotalHours;
+                        var difference = (long)(followUpDTO.create - customer.created.AddDays(customer.count).AddHours((int)customer.hours)).TotalHours;
                         customer.hours = difference;
                         _CustomerRepo.Update(customer);
                         _CustomerRepo.Save();
