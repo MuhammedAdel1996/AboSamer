@@ -73,7 +73,7 @@ namespace Technical.Controllers
                 customerFollowUP.employees = _CustomerRepo.GetEmployees(id);
                 foreach(var employee in customerFollowUP.employees)
                 {
-                    _PhonesRepo.GetUserByObjectId("Employee", employee.id).Select(s => new PhoneDTO { phone = s.phone, whatsapp = s.whatsapp }).ToList();
+                   employee.Phones= _PhonesRepo.GetUserByObjectId("Employee", employee.id).Select(s => new PhoneDTO { phone = s.phone, whatsapp = s.whatsapp }).ToList();
                 }
             }
 
