@@ -24,14 +24,14 @@ namespace Technical.Controllers
             _PhonesRepo = PhonesRepo;
         }
         [HttpGet]
-        [Route("NewOrders")]
+        [Route("NewCheck")]
         public IActionResult NewOrders()
         {
             var result = _CheckRepositry.GetAll().Where(s => string.IsNullOrEmpty(s.result) && s.create.AddHours(s.count) <= DateTime.Now).Select(s => s.customerid).ToList();
             return Ok(result);
         }
         [HttpGet]
-        [Route("ActionOrders/{role}")]
+        [Route("ActionCheck/{role}")]
         public IActionResult ActionOrders(int role)
         {
             var result = _CheckRepositry.GetAll().Where(s => !string.IsNullOrEmpty(s.result) && (role == 1 || s.Done == false) && s.create.AddHours(s.count) <= DateTime.Now).Select(s => s.customerid).ToList();
