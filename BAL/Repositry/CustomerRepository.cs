@@ -54,6 +54,24 @@ namespace BAL.Repositry
 						 id=e.id,name=e.name,ownerid=u.UserId,username=u.UserName})).FirstOrDefault();
 			return result;
 		}
+		public OrderCustomerDTO GetUserInfoOrder(int id)
+		{ 
+			var result = (from e in taskContext.Customer join s in taskContext.Sector
+						 on e.sectorid equals s.id join u in taskContext.Users
+						 on e.ownerid equals u.UserId where e.id==id select (new OrderCustomerDTO() {sectorid=s.id,
+						 sectorname=s.Name,address=e.address,created=e.created,field=e.field,
+						 id=e.id,name=e.name,ownerid=u.UserId,username=u.UserName})).FirstOrDefault();
+			return result;
+		}
+		public CheckCustomer GetUserInfoCheck(int id)
+		{
+				var result = (from e in taskContext.Customer join s in taskContext.Sector
+						 on e.sectorid equals s.id join u in taskContext.Users
+						 on e.ownerid equals u.UserId where e.id==id select (new CheckCustomer() {sectorid=s.id,
+						 sectorname=s.Name,address=e.address,created=e.created,field=e.field,
+						 id=e.id,name=e.name,ownerid=u.UserId,username=u.UserName})).FirstOrDefault();
+			return result;
+		}
 		public List<EmployeeDTO> GetEmployees(int id)
 		{
 			var result = taskContext.Employee.Where(s => s.customerid == id).Select(

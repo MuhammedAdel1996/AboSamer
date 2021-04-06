@@ -14,6 +14,8 @@ namespace BAL.IRepositry
 		IEnumerable<FollowUpDTO> GetFollowUp(int id);
 		CustomerFollowUP GetUserInfo(int id);
 		 List<EmployeeDTO> GetEmployees(int id);
+		OrderCustomerDTO GetUserInfoOrder(int id);
+		CheckCustomer GetUserInfoCheck(int id);
 		List<int> GetNewCustomers();
 	}
 }

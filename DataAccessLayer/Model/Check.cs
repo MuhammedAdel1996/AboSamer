@@ -5,7 +5,7 @@ using System.Text;
 
 namespace DataAccessLayer.Model
 {
-	public class Order
+	public class Check
 	{
 		public int id { set; get; }
 		public string description { set; get; }

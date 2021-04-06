@@ -18,18 +18,23 @@ namespace Technical.Controllers
         private readonly IPhoneRepository _PhonesRepo;
         private readonly Dictionary<int, int> Time;
         private readonly IGenericRepositry<FollowUp> _genericRepositry;
-        public FollowUPController(ICustomerRepository CustomerRepo, IPhoneRepository PhonesRepo, IGenericRepositry<FollowUp> genericRepositry)
+        private readonly IGenericRepositry<Order> _OrderRepositry;
+        private readonly IGenericRepositry<Check> _CheckRepositry;
+
+        public FollowUPController(ICustomerRepository CustomerRepo, IPhoneRepository PhonesRepo, IGenericRepositry<FollowUp> genericRepositry
+            , IGenericRepositry<Order> OrderRepositry, IGenericRepositry<Check> CheckRepositry)
         {
             _CustomerRepo = CustomerRepo;
             _PhonesRepo = PhonesRepo;
             _genericRepositry = genericRepositry;
+            _OrderRepositry = OrderRepositry;
+            _CheckRepositry = CheckRepositry;
             Time = new Dictionary<int, int>()
         {
             { 1, 3},
-            { 3, 7},
-            { 7,10 },
-            {10,21 },
-            {21,30 },
+            { 3, 10},
+            { 10,25 },
+            {25,30 },
             {30,30 }
         };
         }
@@ -115,6 +120,32 @@ namespace Technical.Controllers
                         _CustomerRepo.Save();
                         _genericRepositry.Insert(followUp);
                         _genericRepositry.Save();
+                    }
+                    if(followUp.order)
+                    {
+                        Order order = new Order();
+                        order.count = 0;
+                        order.customerid = customer.id;
+                        order.ownerid = followUp.ownerid;
+                        order.description = followUp.discribtion;
+                        order.create = DateTime.Now;
+                        order.Done = false;
+                        _OrderRepositry.Insert(order);
+                        _OrderRepositry.Save();
+
+                    }
+                    if(followUp.followup)
+                    {
+                        Check Check = new Check();
+                        Check.count = 0;
+                        Check.customerid = customer.id;
+                        Check.ownerid = followUp.ownerid;
+                        Check.description = followUp.discribtion;
+                        Check.create = DateTime.Now;
+                        Check.Done = false;
+                        _CheckRepositry.Insert(Check);
+                        _CheckRepositry.Save();
+
                     }
                 }
                 return "Added Done";
