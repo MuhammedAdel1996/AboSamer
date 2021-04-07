@@ -130,6 +130,7 @@ namespace Technical.Controllers
                         order.description = followUp.discribtion;
                         order.create = DateTime.Now;
                         order.Done = false;
+                        order.id = 0;
                         _OrderRepositry.Insert(order);
                         _OrderRepositry.Save();
 
@@ -143,6 +144,7 @@ namespace Technical.Controllers
                         Check.description = followUp.discribtion;
                         Check.create = DateTime.Now;
                         Check.Done = false;
+                        Check.id = 0;
                         _CheckRepositry.Insert(Check);
                         _CheckRepositry.Save();
 
