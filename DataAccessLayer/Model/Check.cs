@@ -17,7 +17,7 @@ namespace DataAccessLayer.Model
 		public int? ownerid { set; get; }
 		public virtual User User { set; get; }
 		
-		public int? useraction { set; get; }
+		public string useraction { set; get; }
 		
 		public string result { set; get; }
 		public int count { set; get; }

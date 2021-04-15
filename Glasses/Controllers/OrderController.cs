@@ -17,13 +17,13 @@ namespace Technical.Controllers
         private readonly IGenericRepositry<Order> _OrderRepositry;
         private readonly ICustomerRepository _CustomerRepo;
         private readonly IPhoneRepository _PhonesRepo;
-        private readonly IGenericRepositry<User> _UserRepositry;
-        public OrderController(IGenericRepositry<Order> OrderRepositry, ICustomerRepository CustomerRepo, IPhoneRepository PhonesRepo, IGenericRepositry<User> UserRepositry)
+        
+        public OrderController(IGenericRepositry<Order> OrderRepositry, ICustomerRepository CustomerRepo, IPhoneRepository PhonesRepo)
         {
             _OrderRepositry = OrderRepositry;
             _CustomerRepo = CustomerRepo;
             _PhonesRepo = PhonesRepo;
-            _UserRepositry = UserRepositry;
+            
         }
         [HttpGet]
         [Route("NewOrders")]
