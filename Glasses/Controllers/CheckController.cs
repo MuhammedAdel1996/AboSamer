@@ -46,12 +46,14 @@ namespace Technical.Controllers
             if (!string.IsNullOrEmpty(Check.result) && result != null)
             {
                 result.result = Check.result;
+                result.useraction = Check.useraction;
                 _CheckRepositry.Update(result);
                 _CheckRepositry.Save();
             }
             if (Check.Done == true && result != null)
             {
                 result.Done = Check.Done;
+                result.useraction = Check.useraction;
                 _CheckRepositry.Update(result);
                 _CheckRepositry.Save();
             }
@@ -59,6 +61,7 @@ namespace Technical.Controllers
             {
                 var difference = (int)(Check.late.Value - result.create).TotalHours;
                 result.count = difference;
+                result.useraction = Check.useraction;
                 _CheckRepositry.Update(result);
                 _CheckRepositry.Save();
             }
@@ -71,7 +74,7 @@ namespace Technical.Controllers
             var ordercustomer = _CustomerRepo.GetUserInfoCheck(id);
             if (ordercustomer != null)
             {
-                ordercustomer.Checks = _CheckRepositry.GetAll().Where(s => s.customerid == id).OrderByDescending(s => s.create.AddHours(s.count)).ToList();
+                ordercustomer.Checks = _CheckRepositry.GetAll().Where(s => s.customerid == id).OrderByDescending(s => s.create).ToList();
                 ordercustomer.Phones = _PhonesRepo.GetUserByObjectId("Customer", id).Select(s => new PhoneDTO { phone = s.phone, whatsapp = s.whatsapp }).ToList();
                 ordercustomer.employees = _CustomerRepo.GetEmployees(id);
                 foreach (var employee in ordercustomer.employees)

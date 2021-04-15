@@ -12,6 +12,7 @@ namespace DataAccessLayer.ViewModels
 		public int customerid { set; get; }
 
 		public int? ownerid { set; get; }
+		public int? useraction { set; get; }
 		
 		public string result { set; get; }
 		public int count { set; get; }

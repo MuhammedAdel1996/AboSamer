@@ -16,6 +16,9 @@ namespace DataAccessLayer.Model
 		[ForeignKey("User")]
 		public int? ownerid { set; get; }
 		public virtual User User { set; get; }
+		
+		public int? useraction { set; get; }
+		
 		public string result { set; get; }
 		public int count { set; get; }
 		public bool Done { set; get; }

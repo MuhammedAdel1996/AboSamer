@@ -17,11 +17,13 @@ namespace Technical.Controllers
         private readonly IGenericRepositry<Order> _OrderRepositry;
         private readonly ICustomerRepository _CustomerRepo;
         private readonly IPhoneRepository _PhonesRepo;
-        public OrderController(IGenericRepositry<Order> OrderRepositry, ICustomerRepository CustomerRepo, IPhoneRepository PhonesRepo)
+        private readonly IGenericRepositry<User> _UserRepositry;
+        public OrderController(IGenericRepositry<Order> OrderRepositry, ICustomerRepository CustomerRepo, IPhoneRepository PhonesRepo, IGenericRepositry<User> UserRepositry)
         {
             _OrderRepositry = OrderRepositry;
             _CustomerRepo = CustomerRepo;
             _PhonesRepo = PhonesRepo;
+            _UserRepositry = UserRepositry;
         }
         [HttpGet]
         [Route("NewOrders")]
@@ -46,12 +48,14 @@ namespace Technical.Controllers
             if (!string.IsNullOrEmpty(order.result) && result!=null)
             {
                 result.result = order.result;
+                result.useraction = order.useraction;
                 _OrderRepositry.Update(result);
                 _OrderRepositry.Save();
             }
             if(order.Done==true && result!=null)
             {
                 result.Done = order.Done;
+                result.useraction = order.useraction;
                 _OrderRepositry.Update(result);
                 _OrderRepositry.Save();
             }
@@ -59,6 +63,7 @@ namespace Technical.Controllers
             {
                 var difference = (int)(order.late.Value - result.create).TotalHours;
                 result.count = difference;
+                result.useraction = order.useraction;
                 _OrderRepositry.Update(result);
                 _OrderRepositry.Save();
             }
@@ -71,7 +76,8 @@ namespace Technical.Controllers
             var ordercustomer = _CustomerRepo.GetUserInfoOrder(id);
             if (ordercustomer != null)
             {
-                ordercustomer.Orders = _OrderRepositry.GetAll().Where(s => s.customerid == id).OrderByDescending(s => s.create.AddHours(s.count)).ToList();
+
+                ordercustomer.Orders = _OrderRepositry.GetAll().Where(s => s.customerid == id).OrderByDescending(s => s.create).ToList();
                 ordercustomer.Phones = _PhonesRepo.GetUserByObjectId("Customer", id).Select(s => new PhoneDTO { phone = s.phone, whatsapp = s.whatsapp }).ToList();
                 ordercustomer.employees = _CustomerRepo.GetEmployees(id);
                 foreach (var employee in ordercustomer.employees)
