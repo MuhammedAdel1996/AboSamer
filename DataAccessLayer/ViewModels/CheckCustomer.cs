@@ -10,7 +10,7 @@ namespace DataAccessLayer.ViewModels
 	{
 		public CheckCustomer()
 		{
-			Checks = new List<Check>();
+			Checks = new List<CheckDTO>();
 			Phones = new List<PhoneDTO>();
 			employees = new List<EmployeeDTO>();
 		}
@@ -23,7 +23,7 @@ namespace DataAccessLayer.ViewModels
 		public int ownerid { set; get; }
 		public string username { set; get; }
 		public DateTime created { set; get; }
-		public List<Check> Checks { set; get; }
+		public List<CheckDTO> Checks { set; get; }
 		public List<PhoneDTO> Phones { set; get; }
 		public List<EmployeeDTO> employees { set; get; }
 	}

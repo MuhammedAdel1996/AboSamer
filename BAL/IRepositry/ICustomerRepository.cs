@@ -17,5 +17,7 @@ namespace BAL.IRepositry
 		OrderCustomerDTO GetUserInfoOrder(int id);
 		CheckCustomer GetUserInfoCheck(int id);
 		List<int> GetNewCustomers();
+		List<OrderDTO> GetOrderInfo(int customerid);
+		List<CheckDTO> GetCheckInfo(int customerid);
 	}
 }

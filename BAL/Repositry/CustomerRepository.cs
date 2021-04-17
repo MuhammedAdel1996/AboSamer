@@ -86,5 +86,21 @@ namespace BAL.Repositry
 				}).ToList();
 			return result;
 		}
+		public List<OrderDTO> GetOrderInfo(int customerid)
+		{
+			var result = (from e in taskContext.Order join u in taskContext.Users
+						 on e.ownerid equals u.UserId orderby e.create descending select (new OrderDTO() {useraction=e.useraction,
+						 count=e.count,create=e.create,user=u.UserName,customerid=e.customerid,
+						 description=e.description,Done=e.Done,id=e.id,ownerid=e.ownerid,result=e.result})).ToList();
+			return result;
+		}
+	public List<CheckDTO> GetCheckInfo(int customerid)
+		{
+			var result = (from e in taskContext.Order join u in taskContext.Users
+						 on e.ownerid equals u.UserId orderby e.create descending select (new CheckDTO() {useraction=e.useraction,
+						 count=e.count,create=e.create,user=u.UserName,customerid=e.customerid,
+						 description=e.description,Done=e.Done,id=e.id,ownerid=e.ownerid,result=e.result})).ToList();
+			return result;
+		}
 	}
 }

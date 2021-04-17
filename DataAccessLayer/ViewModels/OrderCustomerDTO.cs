@@ -10,7 +10,7 @@ namespace DataAccessLayer.ViewModels
 	{
 		public OrderCustomerDTO()
 		{
-			Orders = new List<Order>();
+			Orders = new List<OrderDTO>();
 			Phones = new List<PhoneDTO>();
 			employees = new List<EmployeeDTO>();
 		}
@@ -23,7 +23,7 @@ namespace DataAccessLayer.ViewModels
 		public int ownerid { set; get; }
 		public string username { set; get; }
 		public DateTime created { set; get; }
-		public List<Order> Orders { set; get; }
+		public List<OrderDTO> Orders { set; get; }
 		public List<PhoneDTO> Phones { set; get; }
 		public List<EmployeeDTO> employees { set; get; }
 	}

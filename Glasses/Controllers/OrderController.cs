@@ -77,7 +77,7 @@ namespace Technical.Controllers
             if (ordercustomer != null)
             {
 
-                ordercustomer.Orders = _OrderRepositry.GetAll().Where(s => s.customerid == id).OrderByDescending(s => s.create).ToList();
+                ordercustomer.Orders = _CustomerRepo.GetOrderInfo(id);
                 ordercustomer.Phones = _PhonesRepo.GetUserByObjectId("Customer", id).Select(s => new PhoneDTO { phone = s.phone, whatsapp = s.whatsapp }).ToList();
                 ordercustomer.employees = _CustomerRepo.GetEmployees(id);
                 foreach (var employee in ordercustomer.employees)

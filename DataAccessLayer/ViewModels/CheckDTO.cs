@@ -18,5 +18,6 @@ namespace DataAccessLayer.ViewModels
 		public int count { set; get; }
 		public bool Done { set; get; }
 		public DateTime? late { set; get; }
+		public string user { set; get; }
 	}
 }
