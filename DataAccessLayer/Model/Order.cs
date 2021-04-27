@@ -22,5 +22,6 @@ namespace DataAccessLayer.Model
 		public string result { set; get; }
 		public int count { set; get; }
 		public bool Done { set; get; }
+		public bool Lock { set; get; }
 	}
 }

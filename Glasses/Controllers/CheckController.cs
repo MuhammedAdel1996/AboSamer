@@ -47,6 +47,7 @@ namespace Technical.Controllers
             {
                 result.result = Check.result;
                 result.useraction = Check.useraction;
+                result.Lock = false;
                 _CheckRepositry.Update(result);
                 _CheckRepositry.Save();
             }
@@ -54,6 +55,7 @@ namespace Technical.Controllers
             {
                 result.Done = Check.Done;
                 result.useraction = Check.useraction;
+                result.Lock = false;
                 _CheckRepositry.Update(result);
                 _CheckRepositry.Save();
             }
@@ -62,6 +64,7 @@ namespace Technical.Controllers
                 var difference = (int)(Check.late.Value - result.create).TotalHours;
                 result.count = difference;
                 result.useraction = Check.useraction;
+                result.Lock = false;
                 _CheckRepositry.Update(result);
                 _CheckRepositry.Save();
             }
@@ -84,6 +87,29 @@ namespace Technical.Controllers
 
             }
             return Ok(ordercustomer);
+        }
+        [HttpGet]
+        [Route("CheckLock/{id}")]
+        public IActionResult CheckLock(int id)
+        {
+            var result = _CheckRepositry.GetById(id);
+            if (result == null)
+                return BadRequest(true);
+            
+            return Ok(result.Lock);
+        }
+        [HttpGet]
+        [Route("SetLock/{id}")]
+        public IActionResult SetLock(int id)
+        {
+            var result = _CheckRepositry.GetById(id);
+            if (result == null)
+                return BadRequest();
+
+            result.Lock = true;
+            _CheckRepositry.Update(result);
+            _CheckRepositry.Save();
+            return Ok(true);
         }
     }
 }

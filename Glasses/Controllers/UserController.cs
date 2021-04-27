@@ -78,7 +78,7 @@ namespace Glasses.Controllers
             if (ModelState.IsValid)
             {
                 var responseData = genericRepository.FindUser(model);
-                if (responseData != null)
+                if (responseData != null&&DateTime.Now.Hour>=9 &&DateTime.Now.Hour<=17)
                     return Ok(responseData);
                 else
                     return Ok(null);
