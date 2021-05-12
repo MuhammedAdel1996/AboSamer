@@ -15,15 +15,18 @@ namespace Technical.Controllers
     public class OrderController : ControllerBase
     {
         private readonly IGenericRepositry<Order> _OrderRepositry;
+        private readonly IGenericRepositry<OrderResult> _OrderResultRepositry;
         private readonly ICustomerRepository _CustomerRepo;
         private readonly IPhoneRepository _PhonesRepo;
         
-        public OrderController(IGenericRepositry<Order> OrderRepositry, ICustomerRepository CustomerRepo, IPhoneRepository PhonesRepo)
+        public OrderController(IGenericRepositry<Order> OrderRepositry, ICustomerRepository CustomerRepo, IPhoneRepository PhonesRepo, IGenericRepositry<OrderResult> OrderResultRepositry)
         {
             _OrderRepositry = OrderRepositry;
             _CustomerRepo = CustomerRepo;
             _PhonesRepo = PhonesRepo;
-            
+            _OrderResultRepositry = OrderResultRepositry;
+
+
         }
         [HttpGet]
         [Route("NewOrders")]
@@ -113,6 +116,15 @@ namespace Technical.Controllers
             _OrderRepositry.Update(result);
             _OrderRepositry.Save();
             return Ok(true);
+        }
+        [HttpGet]
+        [Route("GetResults/{id}")]
+        public IActionResult GetResults(int id)
+        {
+            var order = _OrderRepositry.GetById(id);
+            var result = _OrderResultRepositry.GetAll().Where(s=>s.orderid==id).ToList();
+
+            return Ok(result);
         }
 
     }

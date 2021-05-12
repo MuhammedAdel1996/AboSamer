@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DataAccessLayer.Model;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -6,6 +7,10 @@ namespace DataAccessLayer.ViewModels
 {
 	public class OrderDTO
 	{
+		public OrderDTO()
+		{
+			orderResults = new List<OrderResult>();
+		}
 		public int id { set; get; }
 		public string description { set; get; }
 		public DateTime create { set; get; }
@@ -19,5 +24,6 @@ namespace DataAccessLayer.ViewModels
 		public bool Done { set; get; }
 		public DateTime? late { set; get; }
 		public string user { set; get; }
+		List<OrderResult> orderResults { set; get; }
 	}
 }
