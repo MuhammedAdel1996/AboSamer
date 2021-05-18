@@ -158,5 +158,28 @@ namespace Technical.Controllers
             }
 
         }
+        [HttpGet]
+        [Route("CheckLock/{id}")]
+        public IActionResult CheckLock(int id)
+        {
+            var result = _genericRepositry.GetById(id);
+            if (result == null)
+                return BadRequest(true);
+
+            return Ok(result.Lock);
+        }
+        [HttpGet]
+        [Route("SetLock/{id}")]
+        public IActionResult SetLock(int id)
+        {
+            var result = _genericRepositry.GetById(id);
+            if (result == null)
+                return BadRequest();
+
+            result.Lock = true;
+            _genericRepositry.Update(result);
+            _genericRepositry.Save();
+            return Ok(true);
+        }
     }
 }

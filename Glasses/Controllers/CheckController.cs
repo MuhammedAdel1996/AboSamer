@@ -15,13 +15,15 @@ namespace Technical.Controllers
     public class CheckController : ControllerBase
     {
         private readonly IGenericRepositry<Check> _CheckRepositry;
+        private readonly IGenericRepositry<CheckResult> _CheckResultRepositry;
         private readonly ICustomerRepository _CustomerRepo;
         private readonly IPhoneRepository _PhonesRepo;
-        public CheckController(IGenericRepositry<Check> CheckRepositry, ICustomerRepository CustomerRepo, IPhoneRepository PhonesRepo)
+        public CheckController(IGenericRepositry<Check> CheckRepositry, ICustomerRepository CustomerRepo, IPhoneRepository PhonesRepo, IGenericRepositry<CheckResult> CheckResultRepositry)
         {
             _CheckRepositry = CheckRepositry;
             _CustomerRepo = CustomerRepo;
             _PhonesRepo = PhonesRepo;
+            _CheckResultRepositry = CheckResultRepositry;
         }
         [HttpGet]
         [Route("NewCheck")]
@@ -45,9 +47,13 @@ namespace Technical.Controllers
             var result = _CheckRepositry.GetById(Check.id);
             if (!string.IsNullOrEmpty(Check.result) && result != null)
             {
-                result.result = Check.result;
-                result.useraction = Check.useraction;
+                CheckResult CheckResult = new CheckResult();
+                CheckResult.orderid = Check.id;
+                CheckResult.result = Check.result;
+                CheckResult.useraction = Check.useraction;
                 result.Lock = false;
+                _CheckResultRepositry.Insert(CheckResult);
+                _CheckResultRepositry.Save();
                 _CheckRepositry.Update(result);
                 _CheckRepositry.Save();
             }
@@ -110,6 +116,29 @@ namespace Technical.Controllers
             _CheckRepositry.Update(result);
             _CheckRepositry.Save();
             return Ok(true);
+        }
+        [HttpGet]
+        [Route("GetResults/{id}")]
+        public IActionResult GetResults(int id)
+        {
+            CheckResultDTO CheckResultDTO = new CheckResultDTO();
+            var check = _CheckRepositry.GetById(id);
+            if (check != null)
+            {
+                CheckResultDTO.id = check.id;
+                CheckResultDTO.Lock = check.Lock;
+                CheckResultDTO.ownerid = check.ownerid;
+                CheckResultDTO.useraction = check.useraction;
+                CheckResultDTO.Done = check.Done;
+                CheckResultDTO.count = check.count;
+                CheckResultDTO.create = check.create;
+                CheckResultDTO.description = check.description;
+                CheckResultDTO.CheckResults = _CheckResultRepositry.GetAll().Where(s => s.orderid == id).ToList();
+                return Ok(CheckResultDTO);
+            }
+            return BadRequest();
+
+
         }
     }
 }

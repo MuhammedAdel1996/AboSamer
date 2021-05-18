@@ -42,7 +42,7 @@ namespace BAL.Repositry
 		}
 		public List<int> GetNewCustomers()
 		{
-			var result = taskContext.Customer.Where(s => s.count < 30).Select(s => s.id).ToList();
+			var result = taskContext.Customer.Where(s => s.count < 30 && s.hours == null && s.created.AddDays(s.count).Date == DateTime.Now.Date).Select(s => s.id).ToList();
 			return result;
 		}
 		public CustomerFollowUP GetUserInfo(int id)

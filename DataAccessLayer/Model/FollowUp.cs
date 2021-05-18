@@ -18,6 +18,7 @@ namespace DataAccessLayer.Model
 		public bool order { set; get; }
 		public DateTime create { set; get; }
 		public string discribtion { set; get; }
+		public bool Lock { set; get; }
 
 	}
 }

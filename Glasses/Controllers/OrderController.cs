@@ -50,9 +50,13 @@ namespace Technical.Controllers
             var result = _OrderRepositry.GetById(order.id);
             if (!string.IsNullOrEmpty(order.result) && result!=null)
             {
-                result.result = order.result;
-                result.useraction = order.useraction;
+                OrderResult orderResult = new OrderResult();
+                orderResult.orderid = order.id;
+                orderResult.result = order.result;
+                orderResult.useraction = order.useraction;
                 result.Lock = false;
+                _OrderResultRepositry.Insert(orderResult);
+                _OrderResultRepositry.Save();
                 _OrderRepositry.Update(result);
                 _OrderRepositry.Save();
             }
@@ -121,10 +125,24 @@ namespace Technical.Controllers
         [Route("GetResults/{id}")]
         public IActionResult GetResults(int id)
         {
+            ResultOrderDTO resultOrderDTO = new ResultOrderDTO();
             var order = _OrderRepositry.GetById(id);
-            var result = _OrderResultRepositry.GetAll().Where(s=>s.orderid==id).ToList();
+            if(order!=null)
+            {
+                resultOrderDTO.id = order.id;
+                resultOrderDTO.Lock = order.Lock;
+                resultOrderDTO.ownerid = order.ownerid;
+                resultOrderDTO.useraction = order.useraction;
+                resultOrderDTO.Done = order.Done;
+                resultOrderDTO.count = order.count;
+                resultOrderDTO.create = order.create;
+                resultOrderDTO.description = order.description;
+                resultOrderDTO.orderResults = _OrderResultRepositry.GetAll().Where(s => s.orderid == id).ToList();
+                return Ok(resultOrderDTO);
+            }
+            return BadRequest();
 
-            return Ok(result);
+          
         }
 
     }
