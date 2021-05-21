@@ -32,14 +32,14 @@ namespace Technical.Controllers
         [Route("NewOrders")]
         public IActionResult NewOrders()
         {
-            var result = _OrderRepositry.GetAll().Where(s => string.IsNullOrEmpty(s.result) && s.create.AddHours(s.count)<=DateTime.Now).Select(s => s.customerid).ToList();
+            var result = _OrderRepositry.GetAll().Where(s => _OrderResultRepositry .GetAll().Where(x=>x.orderid==s.id).Count()==0&& s.create.AddHours(s.count)<=DateTime.Now).Select(s => s.customerid).ToList();
             return Ok(result);
         }
         [HttpGet]
         [Route("ActionOrders/{role}")]
         public IActionResult ActionOrders(int role)
         {
-            var result = _OrderRepositry.GetAll().Where(s => !string.IsNullOrEmpty(s.result) &&(role==1 || s.Done==false) && s.create.AddHours(s.count) <= DateTime.Now).Select(s => s.customerid).ToList();
+            var result = _OrderRepositry.GetAll().Where(s => _OrderResultRepositry.GetAll().Where(x => x.orderid == s.id).Count() > 0 && (role==1 || s.Done==false) && s.create.AddHours(s.count) <= DateTime.Now).Select(s => s.customerid).ToList();
 
             return Ok(result);
         }
