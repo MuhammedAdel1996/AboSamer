@@ -24,8 +24,8 @@ namespace DataAccessLayer
         public virtual DbSet<Phones> Phones { get; set; }
         public virtual DbSet<RefreshToken> RefreshTokens { get; set; }
         public virtual DbSet<Sector> Sector { get; set; }
-
-
+        public virtual DbSet<OrderResult> OrderResult { get; set; }
+        public virtual DbSet<CheckResult> CheckResult { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
            
