@@ -70,6 +70,9 @@ namespace Technical.Controllers
             }
             if(order.late.HasValue&& result!=null)
             {
+                if (order.late.Value < DateTime.Now || order.late.Value.Hour < 9 || order.late.Value.Hour > 17)
+                    return Ok("Invalid Date");
+
                 var difference = (int)(order.late.Value - result.create).TotalHours;
                 result.count = difference;
                 result.useraction = order.useraction;

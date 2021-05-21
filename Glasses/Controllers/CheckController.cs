@@ -67,6 +67,8 @@ namespace Technical.Controllers
             }
             if (Check.late.HasValue && result != null)
             {
+                if (Check.late.Value < DateTime.Now || Check.late.Value.Hour < 9 || Check.late.Value.Hour > 17)
+                    return Ok("Invalid Date");
                 var difference = (int)(Check.late.Value - result.create).TotalHours;
                 result.count = difference;
                 result.useraction = Check.useraction;
