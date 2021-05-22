@@ -20,15 +20,16 @@ namespace Technical.Controllers
         private readonly IGenericRepositry<FollowUp> _genericRepositry;
         private readonly IGenericRepositry<Order> _OrderRepositry;
         private readonly IGenericRepositry<Check> _CheckRepositry;
-
+        private readonly IGenericRepositry<Lock> _LockRepositry;
         public FollowUPController(ICustomerRepository CustomerRepo, IPhoneRepository PhonesRepo, IGenericRepositry<FollowUp> genericRepositry
-            , IGenericRepositry<Order> OrderRepositry, IGenericRepositry<Check> CheckRepositry)
+            , IGenericRepositry<Order> OrderRepositry, IGenericRepositry<Check> CheckRepositry, IGenericRepositry<Lock> LockRepositry)
         {
             _CustomerRepo = CustomerRepo;
             _PhonesRepo = PhonesRepo;
             _genericRepositry = genericRepositry;
             _OrderRepositry = OrderRepositry;
             _CheckRepositry = CheckRepositry;
+            _LockRepositry = LockRepositry;
             Time = new Dictionary<int, int>()
         {
             { 1, 3},
@@ -42,21 +43,21 @@ namespace Technical.Controllers
         [Route("GetCuurent")]
         public IActionResult GetCuurent()
         {
-            var result = _CustomerRepo.GetCurrent();
+            var result = _CustomerRepo.GetCurrent().Distinct();
             return Ok(result);
         }
         [HttpGet]
         [Route("GetLate")]
         public IActionResult GetLate()
         {
-            var result = _CustomerRepo.GetLate();
+            var result = _CustomerRepo.GetLate().Distinct();
             return Ok(result);
         }
         [HttpGet]
         [Route("GetDelay")]
         public IActionResult GetDelay()
         {
-            var result = _CustomerRepo.GetDelay();
+            var result = _CustomerRepo.GetDelay().Distinct();
             return Ok(result);
         }
         [HttpGet]
@@ -101,6 +102,13 @@ namespace Technical.Controllers
                         customer.hours = difference;
                         _CustomerRepo.Update(customer);
                         _CustomerRepo.Save();
+                        var lockresult = _LockRepositry.GetAll().Where(s => s.customerid == followUpDTO.customerid && s.objectname == "FollowUp").FirstOrDefault();
+                        if (lockresult != null)
+                        {
+                            _LockRepositry.Delete(lockresult.id);
+                            _LockRepositry.Save();
+
+                        }
                     }
                 }
                 else
@@ -149,6 +157,13 @@ namespace Technical.Controllers
                         _CheckRepositry.Save();
 
                     }
+                    var lockresult = _LockRepositry.GetAll().Where(s => s.customerid == followUpDTO.customerid && s.objectname == "FollowUp").FirstOrDefault();
+                    if (lockresult != null)
+                    {
+                        _LockRepositry.Delete(lockresult.id);
+                        _LockRepositry.Save();
+
+                    }
                 }
                 return "Added Done";
             }
@@ -160,26 +175,21 @@ namespace Technical.Controllers
         }
         [HttpGet]
         [Route("CheckLock/{id}")]
-        public IActionResult CheckLock(int id)
+        public IActionResult CheckLock(int id,string type)
         {
-            var result = _genericRepositry.GetById(id);
+            var result = _LockRepositry.GetAll().Where(s => s.customerid == id && s.objectname == type).FirstOrDefault();
             if (result == null)
-                return BadRequest(true);
+                return Ok(false);
 
-            return Ok(result.Lock);
-        }
-        [HttpGet]
-        [Route("SetLock/{id}")]
-        public IActionResult SetLock(int id)
-        {
-            var result = _genericRepositry.GetById(id);
-            if (result == null)
-                return BadRequest();
-
-            result.Lock = true;
-            _genericRepositry.Update(result);
-            _genericRepositry.Save();
             return Ok(true);
+        }
+        [HttpPost]
+        [Route("SetLock")]
+        public IActionResult SetLock([FromBody]Lock l)
+        {
+            _LockRepositry.Insert(l);
+            _LockRepositry.Save();
+            return Ok();
         }
     }
 }

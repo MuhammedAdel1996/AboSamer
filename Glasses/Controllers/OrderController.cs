@@ -18,28 +18,28 @@ namespace Technical.Controllers
         private readonly IGenericRepositry<OrderResult> _OrderResultRepositry;
         private readonly ICustomerRepository _CustomerRepo;
         private readonly IPhoneRepository _PhonesRepo;
-        
-        public OrderController(IGenericRepositry<Order> OrderRepositry, ICustomerRepository CustomerRepo, IPhoneRepository PhonesRepo, IGenericRepositry<OrderResult> OrderResultRepositry)
+        private readonly IGenericRepositry<Lock> _LockRepositry;
+        public OrderController(IGenericRepositry<Order> OrderRepositry, ICustomerRepository CustomerRepo, IPhoneRepository PhonesRepo, IGenericRepositry<OrderResult> OrderResultRepositry, IGenericRepositry<Lock> LockRepositry)
         {
             _OrderRepositry = OrderRepositry;
             _CustomerRepo = CustomerRepo;
             _PhonesRepo = PhonesRepo;
             _OrderResultRepositry = OrderResultRepositry;
-
+            _LockRepositry = LockRepositry;
 
         }
         [HttpGet]
         [Route("NewOrders")]
         public IActionResult NewOrders()
         {
-            var result = _OrderRepositry.GetAll().Where(s => _OrderResultRepositry .GetAll().Where(x=>x.orderid==s.id).Count()==0&& s.create.AddHours(s.count)<=DateTime.Now).Select(s => s.customerid).ToList();
+            var result = _OrderRepositry.GetAll().Where(s => _OrderResultRepositry .GetAll().Where(x=>x.orderid==s.id).Count()==0&& s.create.AddHours(s.count)<=DateTime.Now).Select(s => s.customerid).ToList().Distinct();
             return Ok(result);
         }
         [HttpGet]
         [Route("ActionOrders/{role}")]
         public IActionResult ActionOrders(int role)
         {
-            var result = _OrderRepositry.GetAll().Where(s => _OrderResultRepositry.GetAll().Where(x => x.orderid == s.id).Count() > 0 && (role==1 || s.Done==false) && s.create.AddHours(s.count) <= DateTime.Now).Select(s => s.customerid).ToList();
+            var result = _OrderRepositry.GetAll().Where(s => _OrderResultRepositry.GetAll().Where(x => x.orderid == s.id).Count() > 0 && (role==1 || s.Done==false) && s.create.AddHours(s.count) <= DateTime.Now).Select(s => s.customerid).ToList().Distinct();
 
             return Ok(result);
         }
@@ -48,13 +48,19 @@ namespace Technical.Controllers
         public IActionResult TakeAction([FromBody] OrderDTO  order)
         {
             var result = _OrderRepositry.GetById(order.id);
-            if (!string.IsNullOrEmpty(order.result) && result!=null)
+            if (!string.IsNullOrEmpty(order.result) && result != null)
             {
                 OrderResult orderResult = new OrderResult();
                 orderResult.orderid = order.id;
                 orderResult.result = order.result;
                 orderResult.useraction = order.useraction;
-                result.Lock = false;
+                var lockresult = _LockRepositry.GetAll().Where(s => s.customerid == order.customerid && s.objectname == "Order").FirstOrDefault();
+                if(lockresult !=null)
+                {
+                    _LockRepositry.Delete(lockresult.id);
+                    _LockRepositry.Save();
+
+                }
                 _OrderResultRepositry.Insert(orderResult);
                 _OrderResultRepositry.Save();
                 _OrderRepositry.Update(result);
@@ -64,7 +70,13 @@ namespace Technical.Controllers
             {
                 result.Done = order.Done;
                 result.useraction = order.useraction;
-                result.Lock = false;
+                var lockresult = _LockRepositry.GetAll().Where(s => s.customerid == order.customerid && s.objectname == "Order").FirstOrDefault();
+                if (lockresult != null)
+                {
+                    _LockRepositry.Delete(lockresult.id);
+                    _LockRepositry.Save();
+
+                }
                 _OrderRepositry.Update(result);
                 _OrderRepositry.Save();
             }
@@ -76,7 +88,13 @@ namespace Technical.Controllers
                 var difference = (int)(order.late.Value - result.create).TotalHours;
                 result.count = difference;
                 result.useraction = order.useraction;
-                result.Lock = false;
+                var lockresult = _LockRepositry.GetAll().Where(s => s.customerid == order.customerid && s.objectname == "Order").FirstOrDefault();
+                if (lockresult != null)
+                {
+                    _LockRepositry.Delete(lockresult.id);
+                    _LockRepositry.Save();
+
+                }
                 _OrderRepositry.Update(result);
                 _OrderRepositry.Save();
             }
@@ -103,26 +121,21 @@ namespace Technical.Controllers
         }
         [HttpGet]
         [Route("CheckLock/{id}")]
-        public IActionResult CheckLock(int id)
+        public IActionResult CheckLock(int id, string type)
         {
-            var result = _OrderRepositry.GetById(id);
+            var result = _LockRepositry.GetAll().Where(s => s.customerid == id && s.objectname == type).FirstOrDefault();
             if (result == null)
-                return BadRequest(true);
+                return Ok(false);
 
-            return Ok(result.Lock);
-        }
-        [HttpGet]
-        [Route("SetLock/{id}")]
-        public IActionResult SetLock(int id)
-        {
-            var result = _OrderRepositry.GetById(id);
-            if (result == null)
-                return BadRequest();
-
-            result.Lock = true;
-            _OrderRepositry.Update(result);
-            _OrderRepositry.Save();
             return Ok(true);
+        }
+        [HttpPost]
+        [Route("SetLock")]
+        public IActionResult SetLock([FromBody]Lock l)
+        {
+            _LockRepositry.Insert(l);
+            _LockRepositry.Save();
+            return Ok();
         }
         [HttpGet]
         [Route("GetResults/{id}")]

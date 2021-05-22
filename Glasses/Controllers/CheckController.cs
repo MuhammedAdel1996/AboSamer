@@ -18,25 +18,27 @@ namespace Technical.Controllers
         private readonly IGenericRepositry<CheckResult> _CheckResultRepositry;
         private readonly ICustomerRepository _CustomerRepo;
         private readonly IPhoneRepository _PhonesRepo;
-        public CheckController(IGenericRepositry<Check> CheckRepositry, ICustomerRepository CustomerRepo, IPhoneRepository PhonesRepo, IGenericRepositry<CheckResult> CheckResultRepositry)
+        private readonly IGenericRepositry<Lock> _LockRepositry;
+        public CheckController(IGenericRepositry<Check> CheckRepositry, ICustomerRepository CustomerRepo, IPhoneRepository PhonesRepo, IGenericRepositry<CheckResult> CheckResultRepositry, IGenericRepositry<Lock> LockRepositry)
         {
             _CheckRepositry = CheckRepositry;
             _CustomerRepo = CustomerRepo;
             _PhonesRepo = PhonesRepo;
             _CheckResultRepositry = CheckResultRepositry;
+            _LockRepositry = LockRepositry;
         }
         [HttpGet]
         [Route("NewCheck")]
         public IActionResult NewOrders()
         {
-            var result = _CheckRepositry.GetAll().Where(s => string.IsNullOrEmpty(s.result) && s.create.AddHours(s.count) <= DateTime.Now).Select(s => s.customerid).ToList();
+            var result = _CheckRepositry.GetAll().Where(s => _CheckResultRepositry.GetAll().Where(x => x.orderid == s.id).Count() == 0 && s.create.AddHours(s.count) <= DateTime.Now).Select(s => s.customerid).ToList().Distinct();
             return Ok(result);
         }
         [HttpGet]
         [Route("ActionCheck/{role}")]
         public IActionResult ActionOrders(int role)
         {
-            var result = _CheckRepositry.GetAll().Where(s => !string.IsNullOrEmpty(s.result) && (role == 1 || s.Done == false) && s.create.AddHours(s.count) <= DateTime.Now).Select(s => s.customerid).ToList();
+            var result = _CheckRepositry.GetAll().Where(s => _CheckResultRepositry.GetAll().Where(x => x.orderid == s.id).Count() > 0 && (role == 1 || s.Done == false) && s.create.AddHours(s.count) <= DateTime.Now).Select(s => s.customerid).ToList().Distinct();
 
             return Ok(result);
         }
@@ -51,7 +53,13 @@ namespace Technical.Controllers
                 CheckResult.orderid = Check.id;
                 CheckResult.result = Check.result;
                 CheckResult.useraction = Check.useraction;
-                result.Lock = false;
+                var lockresult = _LockRepositry.GetAll().Where(s => s.customerid == Check.customerid && s.objectname == "Check").FirstOrDefault();
+                if (lockresult != null)
+                {
+                    _LockRepositry.Delete(lockresult.id);
+                    _LockRepositry.Save();
+
+                }
                 _CheckResultRepositry.Insert(CheckResult);
                 _CheckResultRepositry.Save();
                 _CheckRepositry.Update(result);
@@ -61,7 +69,13 @@ namespace Technical.Controllers
             {
                 result.Done = Check.Done;
                 result.useraction = Check.useraction;
-                result.Lock = false;
+                var lockresult = _LockRepositry.GetAll().Where(s => s.customerid == Check.customerid && s.objectname == "Check").FirstOrDefault();
+                if (lockresult != null)
+                {
+                    _LockRepositry.Delete(lockresult.id);
+                    _LockRepositry.Save();
+
+                }
                 _CheckRepositry.Update(result);
                 _CheckRepositry.Save();
             }
@@ -72,7 +86,13 @@ namespace Technical.Controllers
                 var difference = (int)(Check.late.Value - result.create).TotalHours;
                 result.count = difference;
                 result.useraction = Check.useraction;
-                result.Lock = false;
+                var lockresult = _LockRepositry.GetAll().Where(s => s.customerid == Check.customerid && s.objectname == "Check").FirstOrDefault();
+                if (lockresult != null)
+                {
+                    _LockRepositry.Delete(lockresult.id);
+                    _LockRepositry.Save();
+
+                }
                 _CheckRepositry.Update(result);
                 _CheckRepositry.Save();
             }
@@ -98,26 +118,21 @@ namespace Technical.Controllers
         }
         [HttpGet]
         [Route("CheckLock/{id}")]
-        public IActionResult CheckLock(int id)
+        public IActionResult CheckLock(int id, string type)
         {
-            var result = _CheckRepositry.GetById(id);
+            var result = _LockRepositry.GetAll().Where(s => s.customerid == id && s.objectname == type).FirstOrDefault();
             if (result == null)
-                return BadRequest(true);
-            
-            return Ok(result.Lock);
-        }
-        [HttpGet]
-        [Route("SetLock/{id}")]
-        public IActionResult SetLock(int id)
-        {
-            var result = _CheckRepositry.GetById(id);
-            if (result == null)
-                return BadRequest();
+                return Ok(false);
 
-            result.Lock = true;
-            _CheckRepositry.Update(result);
-            _CheckRepositry.Save();
             return Ok(true);
+        }
+        [HttpPost]
+        [Route("SetLock")]
+        public IActionResult SetLock([FromBody]Lock l)
+        {
+            _LockRepositry.Insert(l);
+            _LockRepositry.Save();
+            return Ok();
         }
         [HttpGet]
         [Route("GetResults/{id}")]
