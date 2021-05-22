@@ -26,7 +26,7 @@ namespace DataAccessLayer
         public virtual DbSet<Sector> Sector { get; set; }
         public virtual DbSet<OrderResult> OrderResult { get; set; }
         public virtual DbSet<CheckResult> CheckResult { get; set; }
-        public virtual DbSet<Lock> Lock { get; set; }
+        public virtual DbSet<CustomerLock> CustomerLock { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
            

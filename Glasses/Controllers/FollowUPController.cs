@@ -20,9 +20,9 @@ namespace Technical.Controllers
         private readonly IGenericRepositry<FollowUp> _genericRepositry;
         private readonly IGenericRepositry<Order> _OrderRepositry;
         private readonly IGenericRepositry<Check> _CheckRepositry;
-        private readonly IGenericRepositry<Lock> _LockRepositry;
+        private readonly IGenericRepositry<CustomerLock> _LockRepositry;
         public FollowUPController(ICustomerRepository CustomerRepo, IPhoneRepository PhonesRepo, IGenericRepositry<FollowUp> genericRepositry
-            , IGenericRepositry<Order> OrderRepositry, IGenericRepositry<Check> CheckRepositry, IGenericRepositry<Lock> LockRepositry)
+            , IGenericRepositry<Order> OrderRepositry, IGenericRepositry<Check> CheckRepositry, IGenericRepositry<CustomerLock> LockRepositry)
         {
             _CustomerRepo = CustomerRepo;
             _PhonesRepo = PhonesRepo;
@@ -185,7 +185,7 @@ namespace Technical.Controllers
         }
         [HttpPost]
         [Route("SetLock")]
-        public IActionResult SetLock([FromBody]Lock l)
+        public IActionResult SetLock([FromBody]CustomerLock l)
         {
             _LockRepositry.Insert(l);
             _LockRepositry.Save();

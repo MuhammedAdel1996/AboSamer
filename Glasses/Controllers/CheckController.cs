@@ -18,8 +18,8 @@ namespace Technical.Controllers
         private readonly IGenericRepositry<CheckResult> _CheckResultRepositry;
         private readonly ICustomerRepository _CustomerRepo;
         private readonly IPhoneRepository _PhonesRepo;
-        private readonly IGenericRepositry<Lock> _LockRepositry;
-        public CheckController(IGenericRepositry<Check> CheckRepositry, ICustomerRepository CustomerRepo, IPhoneRepository PhonesRepo, IGenericRepositry<CheckResult> CheckResultRepositry, IGenericRepositry<Lock> LockRepositry)
+        private readonly IGenericRepositry<CustomerLock> _LockRepositry;
+        public CheckController(IGenericRepositry<Check> CheckRepositry, ICustomerRepository CustomerRepo, IPhoneRepository PhonesRepo, IGenericRepositry<CheckResult> CheckResultRepositry, IGenericRepositry<CustomerLock> LockRepositry)
         {
             _CheckRepositry = CheckRepositry;
             _CustomerRepo = CustomerRepo;
@@ -128,7 +128,7 @@ namespace Technical.Controllers
         }
         [HttpPost]
         [Route("SetLock")]
-        public IActionResult SetLock([FromBody]Lock l)
+        public IActionResult SetLock([FromBody]CustomerLock l)
         {
             _LockRepositry.Insert(l);
             _LockRepositry.Save();

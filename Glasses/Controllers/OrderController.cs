@@ -18,8 +18,8 @@ namespace Technical.Controllers
         private readonly IGenericRepositry<OrderResult> _OrderResultRepositry;
         private readonly ICustomerRepository _CustomerRepo;
         private readonly IPhoneRepository _PhonesRepo;
-        private readonly IGenericRepositry<Lock> _LockRepositry;
-        public OrderController(IGenericRepositry<Order> OrderRepositry, ICustomerRepository CustomerRepo, IPhoneRepository PhonesRepo, IGenericRepositry<OrderResult> OrderResultRepositry, IGenericRepositry<Lock> LockRepositry)
+        private readonly IGenericRepositry<CustomerLock> _LockRepositry;
+        public OrderController(IGenericRepositry<Order> OrderRepositry, ICustomerRepository CustomerRepo, IPhoneRepository PhonesRepo, IGenericRepositry<OrderResult> OrderResultRepositry, IGenericRepositry<CustomerLock> LockRepositry)
         {
             _OrderRepositry = OrderRepositry;
             _CustomerRepo = CustomerRepo;
@@ -131,7 +131,7 @@ namespace Technical.Controllers
         }
         [HttpPost]
         [Route("SetLock")]
-        public IActionResult SetLock([FromBody]Lock l)
+        public IActionResult SetLock([FromBody]CustomerLock l)
         {
             _LockRepositry.Insert(l);
             _LockRepositry.Save();
