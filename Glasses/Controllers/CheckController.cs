@@ -117,7 +117,7 @@ namespace Technical.Controllers
             return Ok(ordercustomer);
         }
         [HttpGet]
-        [Route("CheckLock/{id}")]
+        [Route("CheckLock/{id}/{type}")]
         public IActionResult CheckLock(int id, string type)
         {
             var result = _LockRepositry.GetAll().Where(s => s.customerid == id && s.objectname == type).FirstOrDefault();
