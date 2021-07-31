@@ -80,7 +80,6 @@ namespace Technical.Controllers
                 _OrderRepositry.Update(result);
                 _OrderRepositry.Save();
             }
-
             if(order.late.HasValue&& result!=null)
             {
 
