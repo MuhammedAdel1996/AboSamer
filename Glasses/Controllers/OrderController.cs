@@ -55,6 +55,7 @@ namespace Technical.Controllers
                 orderResult.orderid = order.id;
                 orderResult.result = order.result;
                 orderResult.useraction = order.useraction;
+                orderResult.createdate = DateTime.Now;
                 var lockresult = _LockRepositry.GetAll().Where(s => s.customerid == result.customerid && s.objectname == "Order").FirstOrDefault();
                 if(lockresult !=null)
                 {

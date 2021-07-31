@@ -55,6 +55,7 @@ namespace Technical.Controllers
                 CheckResult.orderid = Check.id;
                 CheckResult.result = Check.result;
                 CheckResult.useraction = Check.useraction;
+                CheckResult.createdate = DateTime.Now;
                 var lockresult = _LockRepositry.GetAll().Where(s => s.customerid == result.customerid && s.objectname == "Check").FirstOrDefault();
                 if (lockresult != null)
                 {

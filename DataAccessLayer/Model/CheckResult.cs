@@ -10,5 +10,6 @@ namespace DataAccessLayer.Model
 		public string result { set; get; }
 		public int orderid { set; get; }
 		public string useraction { set; get; }
+		public DateTime createdate { set; get; }
 	}
 }
