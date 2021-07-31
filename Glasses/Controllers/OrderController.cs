@@ -54,7 +54,7 @@ namespace Technical.Controllers
                 orderResult.orderid = order.id;
                 orderResult.result = order.result;
                 orderResult.useraction = order.useraction;
-                var lockresult = _LockRepositry.GetAll().Where(s => s.customerid == order.customerid && s.objectname == "Order").FirstOrDefault();
+                var lockresult = _LockRepositry.GetAll().Where(s => s.customerid == result.customerid && s.objectname == "Order").FirstOrDefault();
                 if(lockresult !=null)
                 {
                     _LockRepositry.Delete(lockresult.id);
@@ -70,7 +70,7 @@ namespace Technical.Controllers
             {
                 result.Done = order.Done;
                 result.useraction = order.useraction;
-                var lockresult = _LockRepositry.GetAll().Where(s => s.customerid == order.customerid && s.objectname == "Order").FirstOrDefault();
+                var lockresult = _LockRepositry.GetAll().Where(s => s.customerid == result.customerid && s.objectname == "Order").FirstOrDefault();
                 if (lockresult != null)
                 {
                     _LockRepositry.Delete(lockresult.id);
@@ -88,7 +88,7 @@ namespace Technical.Controllers
                 var difference = (int)(order.late.Value - result.create).TotalHours;
                 result.count = difference;
                 result.useraction = order.useraction;
-                var lockresult = _LockRepositry.GetAll().Where(s => s.customerid == order.customerid && s.objectname == "Order").FirstOrDefault();
+                var lockresult = _LockRepositry.GetAll().Where(s => s.customerid == result.customerid && s.objectname == "Order").FirstOrDefault();
                 if (lockresult != null)
                 {
                     _LockRepositry.Delete(lockresult.id);
