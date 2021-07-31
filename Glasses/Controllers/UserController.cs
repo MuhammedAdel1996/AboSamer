@@ -72,14 +72,21 @@ namespace Glasses.Controllers
             }
             return Ok(true);
         }
-        [HttpPost("Login")]
-        public ActionResult login([FromBody]User model)
+        [HttpPost("Login/{roleid}")]
+        public ActionResult login([FromBody]User model,int roleid)
         {
             if (ModelState.IsValid)
             {
                 var responseData = genericRepository.FindUser(model);
                 if (responseData != null&&DateTime.Now.Hour>=9 &&DateTime.Now.Hour<=17)
+                {
+                    responseData.RoleId = roleid;
+                    genericRepository.Update(responseData);
+                    genericRepository.Save();
                     return Ok(responseData);
+
+                }
+
                 else
                     return Ok(null);
             }
