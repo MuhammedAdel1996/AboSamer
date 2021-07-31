@@ -47,6 +47,7 @@ namespace Technical.Controllers
         [Route("TakeAction")]
         public IActionResult TakeAction([FromBody] OrderDTO  order)
         {
+
             var result = _OrderRepositry.GetById(order.id);
             if (!string.IsNullOrEmpty(order.result) && result != null)
             {
