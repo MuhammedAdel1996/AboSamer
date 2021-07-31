@@ -47,6 +47,7 @@ namespace Technical.Controllers
         public IActionResult TakeAction([FromBody] CheckDTO Check)
         {
 
+
             var result = _CheckRepositry.GetById(Check.id);
             if (!string.IsNullOrEmpty(Check.result) && result != null)
             {
