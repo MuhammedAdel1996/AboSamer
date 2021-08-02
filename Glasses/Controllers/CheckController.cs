@@ -31,7 +31,7 @@ namespace Technical.Controllers
         [Route("NewCheck")]
         public IActionResult NewOrders()
         {
-            var result = _CheckRepositry.GetAll().Where(s => _CheckResultRepositry.GetAll().Where(x => x.orderid == s.id).Count() == 0 && s.create.AddHours(s.count) <= DateTime.Now).Select(s => s.customerid).ToList().Distinct();
+            var result = _CheckRepositry.GetAll().Where(s => _CheckResultRepositry.GetAll().Where(x => x.orderid == s.id).Count() == 0 && s.create.AddHours(s.count) <= DateTime.Now &&s.Done==false).Select(s => s.customerid).ToList().Distinct();
             return Ok(result);
         }
         [HttpGet]

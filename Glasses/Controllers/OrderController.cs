@@ -32,7 +32,7 @@ namespace Technical.Controllers
         [Route("NewOrders")]
         public IActionResult NewOrders()
         {
-            var result = _OrderRepositry.GetAll().Where(s => _OrderResultRepositry .GetAll().Where(x=>x.orderid==s.id).Count()==0&& s.create.AddHours(s.count)<=DateTime.Now).Select(s => s.customerid).ToList().Distinct();
+            var result = _OrderRepositry.GetAll().Where(s => _OrderResultRepositry .GetAll().Where(x=>x.orderid==s.id).Count()==0&& s.create.AddHours(s.count)<=DateTime.Now&&s.Done==false).Select(s => s.customerid).ToList().Distinct();
             return Ok(result);
         }
         [HttpGet]
