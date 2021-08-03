@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace BAL.Repositry
 {
@@ -89,7 +90,11 @@ namespace BAL.Repositry
 		public List<OrderDTO> GetOrderInfo(int customerid)
 		{
 			var result = (from e in taskContext.Order join u in taskContext.Users
-						 on e.ownerid equals u.UserId orderby e.create descending select (new OrderDTO() {useraction=e.useraction,
+						 on e.ownerid equals u.UserId
+						  join c in taskContext.Customer
+						   on e.customerid equals c.id
+						  where c.id == customerid
+						  orderby e.create descending select (new OrderDTO() {useraction=e.useraction,
 						 count=e.count,create=e.create,user=u.UserName,customerid=e.customerid,
 						 description=e.description,Done=e.Done,id=e.id,ownerid=e.ownerid,result=e.result})).ToList();
 			return result;
@@ -97,7 +102,9 @@ namespace BAL.Repositry
 	public List<CheckDTO> GetCheckInfo(int customerid)
 		{
 			var result = (from e in taskContext.Checks join u in taskContext.Users
-						 on e.ownerid equals u.UserId orderby e.create descending select (new CheckDTO() {useraction=e.useraction,
+						 on e.ownerid equals u.UserId orderby e.create join c in taskContext.Customer
+						  on e.customerid equals c.id where c.id == customerid orderby e.create
+						  descending select (new CheckDTO() {useraction=e.useraction,
 						 count=e.count,create=e.create,user=u.UserName,customerid=e.customerid,
 						 description=e.description,Done=e.Done,id=e.id,ownerid=e.ownerid,result=e.result})).ToList();
 			return result;
