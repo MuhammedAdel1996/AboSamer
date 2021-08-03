@@ -39,7 +39,8 @@ namespace Technical.Controllers
         [Route("ActionOrders/{role}")]
         public IActionResult ActionOrders(int role)
         {
-            var result = _OrderRepositry.GetAll().Where(s=> role==1 || s.Done==false || (s.count>0 && s.create.AddHours(s.count) <= DateTime.Now)).Select(s => s.customerid).ToList().Distinct();
+            var result = _OrderRepositry.GetAll().Where(s => _OrderResultRepositry.GetAll().Where(x => x.orderid == s.id).Count() > 0 && (role == 1 || s.Done == false || (s.count > 0 && s.create.AddHours(s.count) <= DateTime.Now))).Select(s => s.customerid).ToList().Distinct();
+
 
             return Ok(result);
         }
